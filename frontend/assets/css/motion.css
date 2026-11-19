@@ -1,0 +1,162 @@
+/* ==========================================================================
+   Motion: scroll reveal, kinetic type, scrubber, statement, preview card,
+   wordmark letters, chart entrances. All off under prefers-reduced-motion.
+   ========================================================================== */
+
+/* ---------- Reveal gating: animations wait until the element is on screen ---------- */
+.rise[data-reveal]:not(.is-in),
+[data-reveal]:not(.is-in) :is(.grow, .fade-in, .wave, .ring-arc, .seg-on, .ltr, .slide-in, .rise) {
+  animation-play-state: paused;
+}
+
+/* Card hover: one step brighter (no lift) */
+.card:not(.card-hero):hover { background: rgba(255, 255, 255, 0.06); }
+
+/* ---------- Chart entrances ---------- */
+.wave { animation: wave 520ms var(--ease) both; animation-delay: calc(var(--i, 0) * 14ms); }
+@keyframes wave { from { opacity: 0; transform: scale(0.4); } }
+
+.seg-on { animation: segon 260ms var(--ease) both; animation-delay: calc(300ms + var(--i, 0) * 45ms); }
+@keyframes segon { from { fill: var(--track-strong); } }
+
+.ring-arc { animation: ring 900ms var(--ease) both; animation-delay: calc(200ms + var(--i, 0) * 120ms); }
+@keyframes ring { from { stroke-dashoffset: var(--c); } }
+
+.slide-in { animation: slidein 520ms var(--ease) both; animation-delay: calc(var(--i, 0) * 90ms); }
+@keyframes slidein { from { opacity: 0; transform: translateX(-14px); } }
+
+/* Mono values tick: brief mint flash when a HUD value changes */
+.tick-flash { animation: tickflash 600ms ease-out; }
+@keyframes tickflash { from { color: var(--mint-500); } }
+
+/* ---------- Kinetic display type ---------- */
+.kinetic {
+  position: relative;
+  margin: 40px calc(50% - 50vw) 0;
+  padding: 10px 0;
+  overflow: hidden;
+  display: grid;
+  gap: 6px;
+  pointer-events: none;
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+.kinetic-line {
+  display: flex;
+  gap: 0.35em;
+  white-space: nowrap;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-stretch: 125%;
+  font-size: clamp(48px, 9vw, 132px);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  will-change: transform;
+}
+.kinetic-line.rev { transform: translate3d(-38%, 0, 0); }
+.kw {
+  color: #2A2448;
+  /* extruded edge, like letters standing on a ground plane */
+  text-shadow: 1px 1px 0 #1C1734, 2px 2px 0 #1C1734, 3px 3px 0 #18142D, 4px 4px 0 #18142D, 5px 5px 0 #141126, 6px 6px 0 #141126;
+}
+.kw.accent { color: var(--mint-500); text-shadow: 1px 1px 0 #2F8F74, 2px 2px 0 #2F8F74, 3px 3px 0 #23725C, 4px 4px 0 #23725C, 5px 5px 0 #1A5646, 6px 6px 0 #1A5646; }
+.kw.outline { color: transparent; -webkit-text-stroke: 1.5px #3A3360; text-shadow: none; }
+
+/* ---------- Chapter scrubber (right edge) ---------- */
+.scrubber {
+  position: fixed;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 55;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 6px 0;
+}
+.scrub-rail { position: absolute; right: 3px; top: 0; bottom: 0; width: 1px; background: var(--hairline); }
+.scrub-fill { position: absolute; inset: 0; background: var(--mint-500); transform-origin: top; transform: scaleY(0); }
+.scrub-item { position: relative; display: flex; align-items: center; justify-content: flex-end; gap: 8px; height: 14px; padding-right: 14px; }
+.scrub-idx, .scrub-label { font: 500 9.5px/1 var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); transition: color var(--dur) var(--ease), opacity 200ms var(--ease), transform 200ms var(--ease); }
+.scrub-label { opacity: 0; transform: translateX(6px); }
+.scrub-tick { position: absolute; right: 0; width: 7px; height: 1px; background: var(--ink-faint); transition: width 200ms var(--ease), background 200ms var(--ease); }
+/* labels appear on hover only, so they never sit on top of the cards */
+.scrubber:hover .scrub-label { opacity: 1; transform: none; }
+.scrubber:hover { background: var(--glass-pop); border-radius: 12px; padding: 10px 0 10px 12px; box-shadow: var(--shadow-pop); }
+.scrub-item.is-active .scrub-idx, .scrub-item.is-active .scrub-label { color: var(--mint-500); }
+.scrub-item.is-active .scrub-tick { width: 14px; background: var(--mint-500); right: -3px; }
+.scrub-item:hover .scrub-idx, .scrub-item:hover .scrub-label { color: var(--ink); }
+
+/* ---------- Statement ---------- */
+.statement .grad {
+  background: linear-gradient(100deg, #65E6C0, #B79BF2 60%, #9DB4F7);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: drift 8s ease-in-out infinite alternate;
+}
+.statement .w { color: var(--ink-faint); transition: color 300ms var(--ease); }
+.statement .w.lit { color: var(--ink-2); }
+
+/* ---------- Hover preview card ---------- */
+.chapters { position: relative; }
+.preview {
+  position: absolute;
+  left: 38%;
+  top: 0;
+  width: 250px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: var(--glass-pop);
+  box-shadow: var(--shadow-pop);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  display: grid;
+  gap: 10px;
+  pointer-events: none;
+  opacity: 0;
+  scale: 0.96;
+  transition: opacity 180ms var(--ease), scale 180ms var(--ease);
+  z-index: 5;
+}
+.preview.is-on { opacity: 1; scale: 1; }
+.preview h4 { margin: 0; font-size: 18px; font-weight: 500; letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; }
+.preview .share { height: 6px; border-radius: 6px; background: var(--track); overflow: hidden; }
+.preview .share span { display: block; height: 100%; background: var(--mint-500); border-radius: 6px; }
+
+/* ---------- Footer wordmark ---------- */
+/* Each letter carries its own slice of the word's gradient, so the fill
+   survives the per-letter animation (background-clip doesn't reach children). */
+.footer-word:has(.ltr) { background: none; animation: none; }
+.footer-word .ltr {
+  display: inline-block;
+  background: linear-gradient(100deg, #65E6C0 0%, #B79BF2 50%, #9DB4F7 100%);
+  background-size: 600% 100%;
+  background-position: calc(var(--i, 0) * 20%) 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: ltr 800ms var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+@keyframes ltr { from { opacity: 0; transform: translateY(40%); } }
+/* Wordmark cursor: a small mint token */
+.footer-word {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cpolygon points='14,2 24.4,8 24.4,20 14,26 3.6,20 3.6,8' fill='%2365E6C0' stroke='%2314111F' stroke-width='2'/%3E%3Cpath d='M10 12h8M14 12v7' stroke='%2314111F' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E") 14 14, crosshair;
+}
+
+/* ---------- Split-flap loading ---------- */
+.flaps.is-loading .flap { color: var(--ink-faint); }
+
+@media (max-width: 1100px) {
+  .scrubber { display: none; }
+}
+@media (max-width: 860px) {
+  .preview { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wave, .seg-on, .ring-arc, .slide-in, .ltr, .tick-flash, .statement .grad { animation: none !important; }
+  .kinetic-line { transform: none !important; }
+}

@@ -1,0 +1,95 @@
+/* ==========================================================================
+   ToknIQ design tokens: "Night Cockpit"
+   Bento layout (big radii, one hero card, rounded charts) with an
+   instrument-panel skin (glass cards, mono labels, HUD strip).
+   Single accent: mint. See docs/DESIGN_DIRECTION.md.
+   ========================================================================== */
+:root {
+  color-scheme: dark;
+
+  /* Canvas: deep indigo with soft glows behind the cards */
+  --canvas-base: #110E1F;
+  --canvas:
+    radial-gradient(55% 45% at 8% 0%, rgba(101, 230, 192, 0.10), transparent 70%),
+    radial-gradient(50% 45% at 100% 12%, rgba(140, 160, 250, 0.13), transparent 70%),
+    radial-gradient(45% 40% at 70% 100%, rgba(247, 163, 192, 0.06), transparent 70%),
+    #110E1F;
+
+  /* Glass surfaces */
+  --glass: rgba(255, 255, 255, 0.045);
+  --glass-strong: rgba(255, 255, 255, 0.08);
+  --glass-solid: #1D1A2A;              /* fallback when backdrop-filter is unsupported */
+  --glass-pop: rgba(29, 26, 42, 0.92);  /* popovers, inspect panels */
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-highlight: rgba(255, 255, 255, 0.06);
+  --glass-blur: 18px;
+  --shadow-card: 0 24px 60px -24px rgba(0, 0, 0, 0.55);
+  --shadow-pop: 0 24px 60px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px var(--glass-border);
+
+  /* Ink */
+  --ink: #F2EEFF;
+  --ink-2: #C9C2E6;
+  --ink-muted: #8A83A8;   /* 4.8:1 on cards */
+  --ink-faint: #5F5978;
+  --hairline: rgba(255, 255, 255, 0.08);
+  --track: rgba(255, 255, 255, 0.07);
+  --track-strong: rgba(255, 255, 255, 0.12);
+
+  /* Accent: mint (one highlight per card) */
+  --mint-500: #65E6C0;
+  --mint-600: #3FCFA6;
+  --mint-wash: rgba(101, 230, 192, 0.10);
+  --mint-line: rgba(101, 230, 192, 0.35);
+  --on-mint: #14111F;     /* ink on mint, 12:1 */
+  --hero: linear-gradient(140deg, #7DEDCB 0%, #4FD6AE 100%);
+  /* Ordinal mint ramp (validated ≥2:1 at the low end on cards) */
+  --ramp-1: #2F5F57;
+  --ramp-2: #35806E;
+  --ramp-3: #3EA388;
+  --ramp-4: #52C6A4;
+  --ramp-5: #6EE8C4;
+  --orange-dot: #F59A4A;  /* micro-detail, used once */
+
+  /* Status (reserved; always with icon + label) */
+  --good: #4FD68A;
+  --warning: #F0B04A;
+  --critical: #F06A6A;
+  --info: #8FA8F5;
+
+  /* Categorical chart slots, validated on #1D1A2A. Use in order. */
+  --series-1: #199e70;
+  --series-2: #3987e5;
+  --series-3: #d95926;
+  --series-4: #9085e9;
+  --series-5: #c98500;
+
+  /* Type */
+  --font-sans: "Geist", "Inter Tight", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-display: "Archivo", "Geist", sans-serif;
+
+  /* Shape */
+  --r-card: 24px;
+  --r-inner: 14px;
+  --r-chip: 6px;
+  --r-pill: 999px;
+
+  /* Space */
+  --gap: 20px;
+  --pad-card: 24px;
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-8: 32px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur: 160ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur: 0ms; }
+}
